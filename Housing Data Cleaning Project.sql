@@ -1,6 +1,7 @@
 /*
 Data Cleaning using SQL
 */
+-- Queries used: Windows function, Joins, CTE, Aggregate Functions, Converting Data Types
 
 USE [Portfolio Project]
 
@@ -30,7 +31,7 @@ SELECT * FROM Housing
 
 SELECT *
 FROM Housing
-Where PropertyAddress IS NULL
+WHERE PropertyAddress IS NULL
 ORDER BY ParcelID
 
 SELECT a.ParcelID, 
@@ -69,14 +70,14 @@ FROM Housing
 ALTER TABLE Housing
 ADD PropertySplitAddress Nvarchar(255);
 
-Update Housing
+UPDATE Housing
 SET PropertySplitAddress = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1 )
 
 
 ALTER TABLE Housing
 Add PropertySplitCity Nvarchar(255);
 
-Update Housing
+UPDATE Housing
 SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1 , LEN(PropertyAddress))
 
 
