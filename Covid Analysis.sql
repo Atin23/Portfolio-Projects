@@ -17,13 +17,14 @@ ORDER BY 3,4;
 
 -- Deleting duplicate values from CovidDeaths
 
---WITH CTE AS
---(
---SELECT *,ROW_NUMBER() OVER (PARTITION BY continent,location,date ORDER BY continent,location,date) AS RN
---FROM CovidDeaths
---)
---Select * from cte
---DELETE FROM CTE WHERE RN<>1
+WITH CTE AS
+(
+SELECT *,
+	ROW_NUMBER() OVER (PARTITION BY continent,location,date ORDER BY continent,location,date) AS RN
+FROM CovidDeaths
+)
+Select * from cte
+DELETE FROM CTE WHERE RN<>1
 
 
 
