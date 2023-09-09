@@ -1,5 +1,5 @@
 /*
-COVID 19 Data Exploration 
+COVID-19 Data Exploration/Trends Analysis
 
 Queries used: Creating Views, Windows function,  Joins, CTE, Aggregate Functions, Converting Data Types
 
@@ -8,7 +8,6 @@ Queries used: Creating Views, Windows function,  Joins, CTE, Aggregate Functions
 USE [Portfolio Project];
 
 --SELECT * FROM CovidDeaths
---SELECT * FROM CovidVaccinations
 
 SELECT * FROM CovidDeaths
 WHERE continent is NOT null
@@ -29,7 +28,7 @@ DELETE FROM CTE WHERE RN<>1
 
 
 
--- Selecting data which we will be using for analysis
+-- Selecting data that we will be using for analysis
 
 SELECT location, 
 	date,
@@ -42,8 +41,8 @@ WHERE continent is not null
 ORDER BY 1,2;
 
 
---Total Cases vs Total Deaths
--- Represents likelihood of dying if you contract covid in your country
+-- Total Cases vs. Total Deaths
+-- Represents the likelihood of dying if you contract COVID in your country
 
 SELECT location, 
 	date,
@@ -55,8 +54,8 @@ AND continent is not null
 ORDER BY 1,2;
 
 
--- Total Cases vs Population
--- Represents percentage of population infected with Covid
+-- Total Cases vs. Population
+-- Represents the percentage of the population infected with COVID
 
 SELECT location, 
 	date,
@@ -69,7 +68,7 @@ WHERE continent is not null
 ORDER BY 1,2;
 
 
--- Countries with Highest Infection Rate compared to Population
+-- Countries with the Highest Infection Rate compared to the Population
 
 SELECT location, 
 	population,
@@ -81,19 +80,19 @@ GROUP BY location, population
 ORDER BY Percent_Population_Infected DESC;
 
 
---Countries with Highest Death Count 
+--Countries that witnessed High Death counts due to COVID 
 
-SELECT continent,location,
+SELECT continent, location,
 	MAX(cast(Total_deaths as int)) AS Death_Count
 FROM CovidDeaths
 WHERE continent is not null
-GROUP BY continent,location
+GROUP BY continent, location
 ORDER BY Death_Count DESC;
 
 
--- Understanding data on Continent level
+-- Understanding data on the Continent level
 
--- Showing contintents with the highest death count 
+-- Further, explored to show Continents that witnessed high death counts due to COVID 
 
 WITH CONT AS (
 	SELECT continent,
@@ -101,7 +100,7 @@ WITH CONT AS (
 			MAX(cast(Total_deaths as int)) AS Death_Count
 	FROM CovidDeaths
 	WHERE continent is not null 
-	GROUP BY continent,location
+	GROUP BY continent, location
 )
 SELECT continent,SUM(Death_Count) AS Total_Death_Count
 FROM CONT
@@ -110,6 +109,7 @@ ORDER BY Total_Death_Count DESC;
 
 
 -- GLOBAL NUMBERS
+-- Aggregate to preview the number of COVID cases, total deaths etc globally
 
 SELECT SUM(new_cases) AS total_cases,
 	SUM(cast(new_deaths as int)) AS total_deaths,
@@ -119,8 +119,7 @@ WHERE continent is not null
 ORDER BY 1,2;
 
 
--- Creating View to store data for later visualizations
-
+-- Creating Views to store data for later visualizations
 
 CREATE VIEW V_Global_Numbers AS
 SELECT SUM(new_cases) AS total_cases,
@@ -137,7 +136,7 @@ WITH CONT AS (
 			MAX(cast(Total_deaths as int)) AS Death_Count
 	FROM CovidDeaths
 	WHERE continent is not null 
-	GROUP BY continent,location
+	GROUP BY continent, location
 
 )
 SELECT continent,SUM(Death_Count) AS Total_Death_Count
